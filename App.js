@@ -1,19 +1,32 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View, Text } from "react-native";
+import { createStackNavigator, createAppContainer } from "react-navigation";
+import * as Font from "expo-font";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+import Navigation from "./navigation";
+import Tab from "./navigation/tab";
+
+class App extends React.Component {
+  state = {
+    fontLoaded: false
+  };
+  async componentDidMount() {
+    await Font.loadAsync({
+      "raleway-light": require("./assets/fonts/Raleway-Light.ttf")
+    });
+    this.setState({ fontLoaded: true });
+  }
+  render() {
+    if (this.state.fontLoaded) {
+      return (
+        <>
+          <Tab />
+        </>
+      );
+    } else {
+      return <Text>Loading...</Text>;
+    }
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
+export default App;
